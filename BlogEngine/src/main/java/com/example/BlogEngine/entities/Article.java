@@ -2,7 +2,7 @@ package com.example.BlogEngine.entities;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,7 +34,7 @@ public class Article {
     private String content;
 
     @Column(nullable = false)
-    private LocalDate publicationDate;
+    private LocalDateTime publicationDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

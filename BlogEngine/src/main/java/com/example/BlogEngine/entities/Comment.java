@@ -2,7 +2,7 @@ package com.example.BlogEngine.entities;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +26,7 @@ public class Comment {
     private String text;
 
     @Column(nullable = true)
-    private LocalDate commentDate;
+    private LocalDateTime commentDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

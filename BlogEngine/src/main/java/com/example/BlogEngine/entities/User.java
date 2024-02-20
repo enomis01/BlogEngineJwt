@@ -1,6 +1,7 @@
 package com.example.BlogEngine.entities;
 
 import lombok.*;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -40,11 +41,11 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Article> articles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment> comments;
 
@@ -53,13 +54,17 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // System.out.println(this.email);
+        // System.out.println(this.role.name());
+        // return List.of(new SimpleGrantedAuthority("ROLE_"+this.role.name()));
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-    @Override
-    public String getPassword(){
-        return password;
+
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
     @Override
     public String getUsername() {

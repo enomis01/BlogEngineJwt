@@ -1,15 +1,17 @@
 package com.example.BlogEngine.services;
 
 import org.springframework.stereotype.Service;
-import com.example.BlogEngine.dto.ArticleDTO;
+
+import com.example.BlogEngine.auth.SecurityContext;
 import com.example.BlogEngine.entities.Article;
 import com.example.BlogEngine.entities.User;
+import com.example.BlogEngine.exceptions.ArticleNotFoundException;
+import com.example.BlogEngine.exceptions.UserNotFoundException;
+import com.example.BlogEngine.exceptions.UserNotMatchingException;
 import com.example.BlogEngine.repositories.ArticleRepository;
 import com.example.BlogEngine.repositories.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,48 +34,53 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
-    public Article createArticle(ArticleDTO articleDTO, Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public Article createArticle(Article article) {
+        Optional<User> user = userRepository.findByEmail(SecurityContext.getCurrentUsername());
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            Article article = new Article();
-            article.setTitle(articleDTO.getTitle());
-            article.setContent(articleDTO.getContent());
-            article.setPublicationDate(LocalDate.now());
-            article.setUser(user);
+        if (user.isPresent()) {
+            article.setPublicationDate(LocalDateTime.now());
+            article.setUser(user.get());
 
             return articleRepository.save(article);
         } else {
-            throw new EntityNotFoundException("L'utente con ID " + userId + " non è stato trovato.");
+            throw new UserNotFoundException("L'utente associato all'articolo non è stato trovato!");
         }
     }
 
-    public Article updateArticle(Long id, ArticleDTO articleDTO) {
+    public Article updateArticle(Long id, Article article) {
         Optional<Article> optionalArticle = articleRepository.findById(id);
-
         if (optionalArticle.isPresent()) {
-            Article existingArticle = optionalArticle.get();
-            existingArticle.setTitle(articleDTO.getTitle());
-            existingArticle.setContent(articleDTO.getContent());
-            if (articleDTO.getUserId() != null) {
-                User user = userRepository.findById(articleDTO.getUserId())
-                        .orElseThrow(() -> new EntityNotFoundException("Utente non trovato"));
-                existingArticle.setUser(user);
-            }
+            if (SecurityContext.getCurrentUsername().equals(optionalArticle.get().getUser().getEmail())
+                    || SecurityContext.isCurrentUserAdmin()) {
 
-            return articleRepository.save(existingArticle);
+                Article existingArticle = optionalArticle.get();
+                existingArticle.setTitle(article.getTitle());
+                existingArticle.setContent(article.getContent());
+                existingArticle.setPublicationDate(LocalDateTime.now());
+
+                existingArticle = articleRepository.save(existingArticle);
+                return existingArticle;
+            } else {
+                throw new UserNotMatchingException(
+                        "L'utente che vuole modificare l'articolo non corrisponde all'utente che lo ha scritto");
+            }
         } else {
-            throw new RuntimeException("Articolo da aggiornare non trovato!");
+            throw new ArticleNotFoundException("Articolo da aggiornare non trovato!");
         }
     }
 
     public void deleteArticle(Long id) {
-        if (articleRepository.existsById(id)) {
-            articleRepository.deleteById(id);
+        Optional<Article> optionalArticle = articleRepository.findById(id);
+        if (optionalArticle.isPresent()) {
+            if (SecurityContext.getCurrentUsername().equals(optionalArticle.get().getUser().getEmail())
+                    || SecurityContext.isCurrentUserAdmin()) {
+                articleRepository.deleteById(id);
+            } else {
+                throw new UserNotMatchingException(
+                        "L'utente che vuole eliminare l'articolo non corrisponde all'utente che lo ha scritto");
+            }
         } else {
-            throw new RuntimeException("Articolo da eliminare non trovato!");
+            throw new ArticleNotFoundException("L'articolo da eliminare non trovato!");
         }
     }
 }

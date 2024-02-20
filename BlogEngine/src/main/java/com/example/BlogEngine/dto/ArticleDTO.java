@@ -1,7 +1,7 @@
 package com.example.BlogEngine.dto;
 
-import java.time.LocalDate;
-import java.util.List;
+
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ public class ArticleDTO {
     private Long id;
     private String title;
     private String content;
-    private LocalDate publicationDate;
+    private LocalDateTime publicationDate;
     private Long userId; // ID dell'utente autore dell'articolo
-    private List<Long> commentIds; // Lista degli ID dei commenti sull'articolo
-}
+    private String userEmail;
+} 

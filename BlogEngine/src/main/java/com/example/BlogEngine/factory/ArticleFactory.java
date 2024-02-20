@@ -1,10 +1,7 @@
 package com.example.BlogEngine.factory;
 
-import java.util.stream.Collectors;
-
 import com.example.BlogEngine.dto.ArticleDTO;
 import com.example.BlogEngine.entities.Article;
-import com.example.BlogEngine.entities.Comment;
 
 public class ArticleFactory {
     public static ArticleDTO convertToDTO(Article article) {
@@ -13,8 +10,9 @@ public class ArticleFactory {
         articleDTO.setTitle(article.getTitle());
         articleDTO.setContent(article.getContent());
         articleDTO.setUserId(article.getUser().getId());
-        // Imposta gli ID dei commenti sull'articolo
-        articleDTO.setCommentIds(article.getComments().stream().map(Comment::getId).collect(Collectors.toList()));
+        articleDTO.setUserEmail(article.getUser().getEmail());
+        articleDTO.setPublicationDate(article.getPublicationDate());
+
         // Altri campi se necessario
         return articleDTO;
     }

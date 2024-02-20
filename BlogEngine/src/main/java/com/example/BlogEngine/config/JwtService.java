@@ -8,7 +8,6 @@ import java.util.function.Function;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,6 +29,8 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
+        //Map<String,Object> claims = new HashMap<>();
+        //claims.put("role",userDetails.getAuthorities());
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -41,7 +42,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -9,8 +9,9 @@ public class CommentFactory {
         commentDTO.setId(comment.getId());
         commentDTO.setText(comment.getText());
         commentDTO.setUserId(comment.getUser().getId());
+        commentDTO.setUserEmail(comment.getUser().getEmail());
         commentDTO.setArticleId(comment.getArticle().getId());
-        // Altri campi se necessario
+        commentDTO.setCommentDate(comment.getCommentDate());
         return commentDTO;
     }
 
