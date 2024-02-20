@@ -94,4 +94,17 @@ public class CommentService {
             throw new CommentNotFoundException("Commento da eliminare non trovato!");
         }
     }
+
+    public List<Comment> getUserComments() {
+      String email = SecurityContext.getCurrentUsername();
+      Optional<User> opt = userRepository.findByEmail(email);
+      if (opt.isPresent()) {
+        User onDb = opt.get();
+        Long id = onDb.getId();
+        return commentRepository.findByUserId(id);
+    } else {
+        throw new UserNotFoundException("Questa eccezione non dovrebbe mai verificarsi");
+    }
+}
+
 }

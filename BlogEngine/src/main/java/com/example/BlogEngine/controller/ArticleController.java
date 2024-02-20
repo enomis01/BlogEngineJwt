@@ -58,4 +58,20 @@ public class ArticleController {
         return ResponseEntity.ok("Articolo cancellato con successo!");
     }
 
+    @GetMapping("/own")
+    public ResponseEntity<List<ArticleDTO>> getUserArticles() {
+        List<Article> articleList = articleService.getUserArticles();
+        List<ArticleDTO> response = articleList.stream().map(
+                ArticleFactory::convertToDTO).collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+   
+    @GetMapping("/by-query/{queryParam}")
+    public ResponseEntity<List<ArticleDTO>> getArticlesByQuery(@PathVariable("queryParam") String query){
+        List<Article> articleList = articleService.getArticlesByQuery(query);
+        List<ArticleDTO> response = articleList.stream().map(
+            ArticleFactory::convertToDTO).collect(Collectors.toList());
+    return ResponseEntity.ok(response);
+    }
+    
 }

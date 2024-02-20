@@ -11,17 +11,15 @@ DESCRIZIONE: Un sistema di gestione di blog in cui gli utenti possono registrars
 
 **Gestione Articoli:** Gli utenti possono pubblicare, modificare ed eliminare i propri articoli. Ogni articolo ha un titolo, un contenuto e una data di pubblicazione.
 
-**Commenti sugli Articoli:** Gli utenti possono commentare gli articoli pubblicati da altri utenti. I commenti includono il nome dell'autore, il testo del commento e la data 
-di pubblicazione del commento.
+**Commenti sugli Articoli:** Gli utenti possono commentare gli articoli pubblicati da altri utenti. I commenti includono il nome dell'autore, il testo del commento e la data di pubblicazione del commento.
 
-**Protezione Endpoint:** Gli endpoint per la pubblicazione, modifica ed eliminazione degli articoli sono protetti da JWT. Solo gli utenti autenticati possono accedere
- a queste funzionalità o l'utente stesso che ha creato/commentato.
+**Protezione Endpoint:** Gli endpoint per la pubblicazione, modifica ed eliminazione degli articoli/ dei commenti sono protetti da JWT. Solo gli utenti autorizzati (ADMIN) possono accedere a queste funzionalità o l'utente stesso che ha creato il commento/articolo.
  
-**Pagina di Profilo Utente:** Gli utenti hanno una pagina di profilo in cui possono visualizzare gli articoli che hanno pubblicato e i commenti che hanno lasciato.
+**Pagina di Profilo Utente:** Gli utenti hanno a disposizione degli endpoint per recuperare tutti gli articoli e i commenti che hanno scritto
 
-**Ricerca di Articoli:** Gli utenti possono cercare articoli per titolo o autore.
+**Ricerca di Articoli:** Gli utenti possono cercare articoli per titolo o contenuto.
 
-**Gestione Token JWT:** Le password (o token) vengono crittografate e memorizzate in modo sicuro nel database. I token JWT hanno una scadenza (3600000 millisecondi -> 1 ora) e possono essere rigenerati se sono scaduti.
+**Gestione Token JWT:** Le password vengono crittografate e memorizzate in modo sicuro nel database. I token JWT hanno una scadenza (3600000 millisecondi -> 1 ora) e possono essere rigenerati se sono scaduti.
 
 Tecnologie Utilizzate:
 

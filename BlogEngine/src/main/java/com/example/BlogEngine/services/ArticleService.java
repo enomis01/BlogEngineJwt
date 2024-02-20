@@ -83,4 +83,29 @@ public class ArticleService {
             throw new ArticleNotFoundException("L'articolo da eliminare non trovato!");
         }
     }
+
+
+    public List<Article> getUserArticles() {
+        // 1. dal token prendi l'email
+        String email = SecurityContext.getCurrentUsername();
+        // 2. dall'email prendi l'user al db
+        Optional<User> opt = userRepository.findByEmail(email);
+        if (opt.isPresent()) {
+            // 3. dall'user al db prendi l'id
+            User onDb = opt.get();
+            Long id = onDb.getId();
+
+            // 4. dall'id dell'user prendi tutti gli articoli correlati -> (List<Article>)
+
+            return articleRepository.findByUser_Id(id);
+        } else {
+            throw new UserNotFoundException("Questa eccezione non dovrebbe mai verificarsi");
+        }
+    }
+
+    public List<Article> getArticlesByQuery(String query){
+        List<Article> articleList = articleRepository.findByQuery(query);
+        return articleList;
+    }
+
 }
