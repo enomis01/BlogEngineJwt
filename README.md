@@ -21,7 +21,7 @@ di pubblicazione del commento.
 
 **Ricerca di Articoli:** Gli utenti possono cercare articoli per titolo o autore.
 
-**Gestione Token JWT:** Le password (o token) vengono crittografate e memorizzate in modo sicuro nel database. I token JWT hanno una scadenza (60 minuti) e possono essere rigenerati se sono scaduti.
+**Gestione Token JWT:** Le password (o token) vengono crittografate e memorizzate in modo sicuro nel database. I token JWT hanno una scadenza (3600000 millisecondi) e possono essere rigenerati se sono scaduti.
 
 Tecnologie Utilizzate:
 
